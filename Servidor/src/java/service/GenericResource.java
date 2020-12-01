@@ -23,8 +23,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.Authenticator;
 import java.net.MalformedURLException;
+import java.net.PasswordAuthentication;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.ejb.Stateless;
@@ -142,7 +145,7 @@ public class GenericResource {
                 res = "{ \"value\" : \"No se ha encontrado la zona en los datos\"";
             }
         } catch (Exception e) {
-            res = "{ \"value\" : \""+out+"\"";
+               res = "{ \"value\" : \""+out+"\"";
         }
         return res;
     }
@@ -172,8 +175,8 @@ public class GenericResource {
         return res;
     }
     
-    public void consulta(String x){
-        URL servicio = null;
+    public void consulta(String x) throws MalformedURLException, IOException{
+        /*URL servicio = null;
         HttpsURLConnection connection = null;
         int codigo = -2;
         Gson parser = null;
@@ -185,18 +188,39 @@ public class GenericResource {
             connection.setRequestProperty("User-Agent", "My simple application");
             connection.setRequestMethod("GET");
             //codigo = connection.getResponseCode();
-            /*if(codigo<200 || codigo>299) {
+            if(codigo<200 || codigo>299) {
                     throw new CodigoException("Error "+codigo);
-            }*/
+            }
             parser = new Gson();
+            Object o = connection.getContent();
         //c = parser.fromJson(new InputStreamReader(in), CountResponse.class);
         //codigo = c.count;
         }catch (MalformedURLException e) {
                 e.printStackTrace();
         }catch (IOException e) {
                 e.printStackTrace();
-        }/*catch (CodigoException e) {
+        }catch (CodigoException e) {
                 //e.printStackTrace();
         }*/
+                URL url = new URL(urlCalidadDelAire);
+        URLConnection con = url.openConnection();
+
+        Authenticator au = new Authenticator() {
+           @Override
+           protected PasswordAuthentication
+              getPasswordAuthentication() {
+              return new PasswordAuthentication
+                 ("usuario", "clave".toCharArray());
+           }
+        };
+        Authenticator.setDefault(au);
+
+        BufferedReader in = new BufferedReader(
+           new InputStreamReader(con.getInputStream()));
+
+        String linea;
+        while ((linea = in.readLine()) != null) {
+           System.out.println(linea);
+        }
     }
 }

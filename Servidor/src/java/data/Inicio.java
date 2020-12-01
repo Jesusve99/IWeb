@@ -34,7 +34,8 @@ public class Inicio extends HttpServlet {
             throws ServletException, IOException {
         
         GenericResource gr = new GenericResource();
-        gr.consulta("https://swapi.dev/api/people/1");
+        gr.consulta("");
+        //gr.getCalidadAire(36, 4);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
