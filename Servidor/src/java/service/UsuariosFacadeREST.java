@@ -121,4 +121,16 @@ public class UsuariosFacadeREST extends AbstractFacade<Usuarios> {
         
         return q.getResultList();
     }
+    
+    @GET
+    @Path("apodo/{apodo}/publi/{id}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Publicaciones> findPubliByUsuario(@PathParam("apodo") String apodo,@PathParam("id") int id) {
+        Query q;
+        q = this.getEntityManager().createQuery("Select p From Publicaciones p Where Upper(p.autor.apodo) Like :apodo and p.id = :id");
+        q.setParameter("apodo", "%" +  apodo.toUpperCase() + "%");
+        q.setParameter("id", id);
+        
+        return q.getResultList();
+    }
 }

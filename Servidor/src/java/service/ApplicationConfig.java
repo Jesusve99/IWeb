@@ -30,9 +30,9 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(service.ComentariosFacadeREST.class);
+        resources.add(service.DatosAbiertos.class);
         resources.add(service.EtiquetasFacadeREST.class);
         resources.add(service.EtiquetaspublicacionesFacadeREST.class);
-        resources.add(service.GenericResource.class);
         resources.add(service.MensajesFacadeREST.class);
         resources.add(service.PublicacionesFacadeREST.class);
         resources.add(service.UsuariosFacadeREST.class);
