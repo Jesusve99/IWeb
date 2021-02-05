@@ -6,11 +6,9 @@
 package service;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import data.TokenCache;
-import data.Ubicacion;
 import java.util.Scanner;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;

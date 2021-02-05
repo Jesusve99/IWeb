@@ -19,7 +19,7 @@ public class TokenCache {
     public static boolean isInCache(String idtoken) {
         Integer exp = cache.get(idtoken);
         if (exp != null) {
-            if (System.currentTimeMillis() < exp) {
+            if (System.currentTimeMillis()/1000 < exp) {
                 return true;
             } else {
                 cache.remove(idtoken);
