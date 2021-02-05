@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import data.TokenCache;
 import data.Ubicacion;
 import java.util.Scanner;
 import javax.net.ssl.HostnameVerifier;
@@ -97,6 +98,9 @@ public class LoggedResource {
             if (rootObj.get("error_description") != null) {
                 res = "ERROR";
             } else {
+                if (!TokenCache.isInCache(idtoken)) {
+                    TokenCache.insertInCache(idtoken, rootObj.get("exp").getAsInt());
+                }
                 res = rootObj.get("name").toString();
             }
                 
