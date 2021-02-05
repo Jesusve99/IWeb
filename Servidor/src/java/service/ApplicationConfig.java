@@ -33,6 +33,7 @@ public class ApplicationConfig extends Application {
         resources.add(service.DatosAbiertos.class);
         resources.add(service.EtiquetasFacadeREST.class);
         resources.add(service.EtiquetaspublicacionesFacadeREST.class);
+        resources.add(service.LoggedResource.class);
         resources.add(service.MensajesFacadeREST.class);
         resources.add(service.PublicacionesFacadeREST.class);
         resources.add(service.UsuariosFacadeREST.class);
