@@ -5,6 +5,7 @@
  */
 package data;
 
+import java.util.HashMap;
 import java.util.Map;
 import javax.ejb.Singleton;
 
@@ -14,7 +15,7 @@ import javax.ejb.Singleton;
  */
 @Singleton
 public class TokenCache {
-    private static Map<String, Integer> cache;
+    private static Map<String, Integer> cache = new HashMap<>();
     
     public static boolean isInCache(String idtoken) {
         Integer exp = cache.get(idtoken);
