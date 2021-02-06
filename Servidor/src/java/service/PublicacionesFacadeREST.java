@@ -5,9 +5,11 @@
  */
 package service;
 
+import data.TokenCache;
 import entity.Publicaciones;
 import java.sql.Date;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,6 +22,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -32,6 +36,9 @@ public class PublicacionesFacadeREST extends AbstractFacade<Publicaciones> {
 
     @PersistenceContext(unitName = "ServidorPU")
     private EntityManager em;
+    
+    @EJB
+    UsuariosFacadeREST uf;
 
     public PublicacionesFacadeREST() {
         super(Publicaciones.class);
@@ -65,10 +72,19 @@ public class PublicacionesFacadeREST extends AbstractFacade<Publicaciones> {
     }
 
     @GET
-    @Override
+    //@Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Publicaciones> findAll() {
-        return super.findAll();
+    public List<Publicaciones> findAll(@Context HttpHeaders httpHeaders) {
+        if (Integer.parseInt(httpHeaders.getRequestHeader("tipo").get(0)) == 1) {
+            if (TokenCache.isInCache(httpHeaders.getRequestHeader("idtoken").get(0))) {
+                return super.findAll();
+            }
+        } else if (Integer.parseInt(httpHeaders.getRequestHeader("tipo").get(0)) == 0) {
+            if (uf.find(httpHeaders.getRequestHeader("email").get(0)) != null) {
+                return super.findAll();
+            }
+        }
+        return null;
     }
 
     @GET
@@ -89,18 +105,18 @@ public class PublicacionesFacadeREST extends AbstractFacade<Publicaciones> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
     @GET
     @Path("autor/{autor}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Publicaciones> findAutor(@PathParam("autor") String autor) {
         Query q;
         q = this.getEntityManager().createQuery("Select p From Publicaciones p Where Upper(p.autor.apodo) Like :autor");
-        q.setParameter("autor", "%" +  autor.toUpperCase() + "%");
-        
+        q.setParameter("autor", "%" + autor.toUpperCase() + "%");
+
         return q.getResultList();
     }
-    
+
     @GET
     @Path("asc")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -109,5 +125,5 @@ public class PublicacionesFacadeREST extends AbstractFacade<Publicaciones> {
         q = this.getEntityManager().createQuery("Select p From Publicaciones p Order By p.fecha ASC ");
         return q.getResultList();
     }
-    
+
 }
