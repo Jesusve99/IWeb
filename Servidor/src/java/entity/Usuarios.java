@@ -53,11 +53,9 @@ public class Usuarios implements Serializable {
     @Size(max = 50)
     @Column(name = "NOMBRE")
     private String nombre;
-    @Size(max = 50)
+    @Size(max = 100)
     @Column(name = "FOTO")
     private String foto;
-    @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "CONTRASE\u00d1A")
     private String contraseña;
