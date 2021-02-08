@@ -142,10 +142,10 @@ public class DatosAbiertos {
             if (zonaEncontrada) {
                 res = zona.getAsJsonObject("properties").toString();
             } else {
-                res = "{ \"value\" : \"No se ha encontrado la zona en los datos\"";
+                res = "{ \"value\" : \"No se ha encontrado la zona en los datos\"}";
             }
         } catch (Exception e) {
-            res = "{ \"value\" : \""+e.getMessage()+"\"";
+            res = "{ \"value\" : \""+e.getMessage()+"\"}";
         }
         return res;
     }
