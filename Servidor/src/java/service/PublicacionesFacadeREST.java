@@ -45,23 +45,47 @@ public class PublicacionesFacadeREST extends AbstractFacade<Publicaciones> {
     }
 
     @POST
-    @Override
+    //@Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Publicaciones entity) {
-        super.create(entity);
+    public void create(@Context HttpHeaders httpHeaders, Publicaciones entity) {
+        if (Integer.parseInt(httpHeaders.getRequestHeader("tipo").get(0)) == 1) {
+            if (TokenCache.isInCache(httpHeaders.getRequestHeader("idtoken").get(0))) {
+                super.create(entity);
+            }
+        } else if (Integer.parseInt(httpHeaders.getRequestHeader("tipo").get(0)) == 0) {
+            if (uf.find(httpHeaders.getRequestHeader("email").get(0)) != null) {
+                super.create(entity);
+            }
+        }
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Publicaciones entity) {
-        super.edit(entity);
+    public void edit(@Context HttpHeaders httpHeaders, @PathParam("id") Integer id, Publicaciones entity) {
+        if (Integer.parseInt(httpHeaders.getRequestHeader("tipo").get(0)) == 1) {
+            if (TokenCache.isInCache(httpHeaders.getRequestHeader("idtoken").get(0))) {
+                super.edit(entity);
+            }
+        } else if (Integer.parseInt(httpHeaders.getRequestHeader("tipo").get(0)) == 0) {
+            if (uf.find(httpHeaders.getRequestHeader("email").get(0)) != null) {
+                super.edit(entity);
+            }
+        }
     }
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
-        super.remove(super.find(id));
+    public void remove(@Context HttpHeaders httpHeaders, @PathParam("id") Integer id) {
+        if (Integer.parseInt(httpHeaders.getRequestHeader("tipo").get(0)) == 1) {
+            if (TokenCache.isInCache(httpHeaders.getRequestHeader("idtoken").get(0))) {
+                super.remove(super.find(id));
+            }
+        } else if (Integer.parseInt(httpHeaders.getRequestHeader("tipo").get(0)) == 0) {
+            if (uf.find(httpHeaders.getRequestHeader("email").get(0)) != null) {
+                super.remove(super.find(id));
+            }
+        }
     }
 
     @GET
@@ -72,19 +96,10 @@ public class PublicacionesFacadeREST extends AbstractFacade<Publicaciones> {
     }
 
     @GET
-    //@Override
+    @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Publicaciones> findAll(@Context HttpHeaders httpHeaders) {
-        if (Integer.parseInt(httpHeaders.getRequestHeader("tipo").get(0)) == 1) {
-            if (TokenCache.isInCache(httpHeaders.getRequestHeader("idtoken").get(0))) {
-                return super.findAll();
-            }
-        } else if (Integer.parseInt(httpHeaders.getRequestHeader("tipo").get(0)) == 0) {
-            if (uf.find(httpHeaders.getRequestHeader("email").get(0)) != null) {
-                return super.findAll();
-            }
-        }
-        return null;
+    public List<Publicaciones> findAll() {
+        return super.findAll();
     }
 
     @GET
